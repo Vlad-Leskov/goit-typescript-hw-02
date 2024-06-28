@@ -1,4 +1,8 @@
-const ErrorMessage = ({ message }) => (
+interface ErrorMessageProps {
+  message: string;
+}
+
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => (
   <div>
     <p>{message}</p>
   </div>

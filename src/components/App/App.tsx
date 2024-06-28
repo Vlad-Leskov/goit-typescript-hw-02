@@ -1,5 +1,4 @@
-import css from "./App.module.css";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import ImageGallery from "../ImageGallery/ImageGallery";
@@ -9,17 +8,19 @@ import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ImageModal from "../ImageModal/ImageModal";
 import { Toaster } from "react-hot-toast";
 import Modal from "react-modal";
+import css from "./App.module.css";
+import { Image } from "../../types";
 
 Modal.setAppElement("#root");
 
-const App = () => {
-  const [images, setImages] = useState([]);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [modalImage, setModalImage] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const App: React.FC = () => {
+  const [images, setImages] = useState<Image[]>([]);
+  const [query, setQuery] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [modalImage, setModalImage] = useState<Image | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!query) return;
@@ -34,8 +35,8 @@ const App = () => {
         "https://api.unsplash.com/search/photos",
         {
           params: {
-            query: query,
-            page: page,
+            query,
+            page,
             per_page: 12,
             client_id: "_VPAkdyHqSXp0JM7CXaTNNE5bIxFPBiO4XuY7ibcLWc",
           },
@@ -54,7 +55,7 @@ const App = () => {
     }
   };
 
-  const handleSearchSubmit = (query) => {
+  const handleSearchSubmit = (query: string) => {
     setQuery(query);
     setPage(1);
   };
@@ -63,7 +64,7 @@ const App = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const openModal = (image) => {
+  const openModal = (image: Image) => {
     setModalImage(image);
     setIsModalOpen(true);
   };

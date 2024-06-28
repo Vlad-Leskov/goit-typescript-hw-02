@@ -1,14 +1,33 @@
-import { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Modal from "react-modal";
+import { Image } from "../../types";
 
-const ImageModal = ({ isOpen, onClose, image }) => {
-  const modalRef = useRef(null);
+interface ImageModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  image: Image | null;
+}
 
-  const handleOutsideClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
+const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
-  };
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isOpen, onClose]);
 
   if (!image) return null;
 
@@ -28,7 +47,6 @@ const ImageModal = ({ isOpen, onClose, image }) => {
       isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="Image Modal"
-      onClick={handleOutsideClick}
     >
       <div ref={modalRef}>
         <img src={image.urls.regular} alt={image.alt_description} />

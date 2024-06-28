@@ -1,6 +1,6 @@
 import { Blocks } from "react-loader-spinner";
 
-const Loader = () => (
+const Loader: React.FC = () => (
   <div
     style={{
       position: "fixed",

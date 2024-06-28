@@ -1,5 +1,12 @@
 import css from "./ImgeCard.module.css";
-const ImageCard = ({ image, onClick }) => {
+import { Image } from "../../types";
+
+interface ImageCardProps {
+  image: Image;
+  onClick: (image: Image) => void;
+}
+
+const ImageCard: React.FC<ImageCardProps> = ({ image, onClick }) => {
   return (
     <div className={css.card}>
       <img
