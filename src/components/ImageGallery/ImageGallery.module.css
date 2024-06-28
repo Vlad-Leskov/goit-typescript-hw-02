@@ -1,0 +1,11 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* .listItem {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+} */
