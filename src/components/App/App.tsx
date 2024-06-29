@@ -13,6 +13,25 @@ import { Image } from "../../types";
 
 Modal.setAppElement("#root");
 
+interface ApiResponse {
+  results: Image[];
+  total_pages: number;
+}
+const getImages = async (query: string, page: number): Promise<ApiResponse> => {
+  const response = await axios.get<ApiResponse>(
+    "https://api.unsplash.com/search/photos",
+    {
+      params: {
+        query,
+        page,
+        per_page: 12,
+        client_id: "_VPAkdyHqSXp0JM7CXaTNNE5bIxFPBiO4XuY7ibcLWc",
+      },
+    }
+  );
+  return response.data;
+};
+
 const App: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
   const [query, setQuery] = useState<string>("");
@@ -31,18 +50,7 @@ const App: React.FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.get(
-        "https://api.unsplash.com/search/photos",
-        {
-          params: {
-            query,
-            page,
-            per_page: 12,
-            client_id: "_VPAkdyHqSXp0JM7CXaTNNE5bIxFPBiO4XuY7ibcLWc",
-          },
-        }
-      );
-      const data = response.data;
+      const data = await getImages(query, page);
       if (page === 1) {
         setImages(data.results);
       } else {
